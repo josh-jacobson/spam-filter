@@ -10,12 +10,12 @@ function [spam, ham] = makedictionary( spam_directory, ham_directory, dictionary
     % To do: set up regex or other method of parsing html, removing header
 
     % Read the inputs
-    spam_files = dir('spam');
+    spam_files = dir(spam_directory);
     spam_filenames = {spam_files.name};
     spamCount = length(spam_filenames);
     spam = cell(1,spamCount);
     
-    ham_files = dir('ham');
+    ham_files = dir(ham_directory);
     ham_filenames = {ham_files.name};
     hamCount = length(ham_filenames);
     ham = cell(1,spamCount);
@@ -43,7 +43,8 @@ function [spam, ham] = makedictionary( spam_directory, ham_directory, dictionary
     
     a = 0.5;
     b = 0.9;
-    fprintf(fid, '%s %f %f', 'word', a, b);
+    fprintf(fid, '%s %f %f\n', 'word', a, b);
+    fprintf(fid, '%s %f %f\n', 'word', a, b);
 
 
 end

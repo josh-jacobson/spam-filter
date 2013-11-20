@@ -7,6 +7,9 @@ function [spam, ham] = makedictionary( spam_directory, ham_directory, dictionary
 %   dictionary file has the following format: 
 %   [word] [P(word|spam)] [P(word|ham)]
 
+    % To do: set up regex or other method of parsing html, removing header
+
+    % Read the inputs
     spam_files = dir('spam');
     spam_filenames = {spam_files.name};
     spamCount = length(spam_filenames);
@@ -34,6 +37,13 @@ function [spam, ham] = makedictionary( spam_directory, ham_directory, dictionary
         fclose(id);
     end
     cd('../');
+    
+    % Create the output dictionary file
+    fid = fopen(dictionary_filename, 'w');
+    
+    a = 0.5;
+    b = 0.9;
+    fprintf(fid, '%s %f %f', 'word', a, b);
 
 
 end

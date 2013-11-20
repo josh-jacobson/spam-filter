@@ -1,0 +1,9 @@
+function spamsort(mail_directory, spam_directory, ham_directory, dictionary_filename, spam_prior_probability) 
+
+%SPAMSORT sorts email files into spam and ham (i.e., not spam).
+%   The input mail_directory and spam_directory indicate file paths in
+%   which to look for ASCII text files.
+
+
+end
+

@@ -12,20 +12,24 @@ function rename_files(spam_directory, ham_directory)
     ham_filenames = {ham_files.name};
     ham_filecount = length(ham_filenames);
     
+    j = 1;
     for i = 1:spam_filecount
-        filename = spam_filenames{i}
+        filename = spam_filenames{i};
         if filename(1) ~= '.' && ~strcmpi(filename, 'cmds') % ignore ., .., .DS_STORE and cmds
-            current_path = fullfile(spam_directory, spam_filenames{i})
-            new_path = fullfile(spam_directory, strcat('spam', num2str(i)))
+            current_path = fullfile(spam_directory, spam_filenames{i});
+            new_path = fullfile(spam_directory, strcat('spam', num2str(j)));
+            j = j+1;
             movefile(current_path, new_path);
         end
     end
     
+    j = 1;
     for i = 1:ham_filecount
-        filename = ham_filenames{i}
+        filename = ham_filenames{i};
         if filename(1) ~= '.' && ~strcmpi(filename, 'cmds') % ignore ., .., .DS_STORE and cmds
-            current_path = fullfile(ham_directory, ham_filenames{i})
-            new_path = fullfile(ham_directory, strcat('ham', num2str(i)))
+            current_path = fullfile(ham_directory, ham_filenames{i});
+            new_path = fullfile(ham_directory, strcat('ham', num2str(j)));
+            j = j+1;
             movefile(current_path, new_path);
         end
     end

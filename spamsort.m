@@ -15,7 +15,6 @@ function filenames = spamsort(mail_directory, spam_directory, ham_directory, dic
     [emails, ~, filenames] = readFilesFromDirectory(mail_directory);
     emailCount = length(emails);
     
-    
     % Read the dictionary file
     [dictionaryWords, spamProb, hamProb] = readDictionary('dictionary.txt');
     
@@ -25,8 +24,8 @@ function filenames = spamsort(mail_directory, spam_directory, ham_directory, dic
         message = unique(emails{i}); % Consider only unique instances of words
         
         % Initialize variables for Baysian computations:
-        spamValue = spam_prior_probability;
-        hamValue = 1 - spam_prior_probability;
+        spamValue = log10(spam_prior_probability);
+        hamValue = log10(1 - spam_prior_probability);
         
         % Add up the sums in the Baysians
         for j = 1:length(message)

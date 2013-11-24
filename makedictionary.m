@@ -12,8 +12,8 @@ function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, 
 %   Default run: [spam, ham, wordList] = makedictionary('smallspam', 'smallham', 'dictionary.txt');
 
     % Read the spam and ham files from the input directories
-    [spam, spamWords] = readFilesFromDirectory(spam_directory);
-    [ham, hamWords] = readFilesFromDirectory(ham_directory);
+    [spam, spamWords, ~] = readFilesFromDirectory(spam_directory);
+    [ham, hamWords, ~] = readFilesFromDirectory(ham_directory);
     
     spamCount = length(spam);
     hamCount = length(ham);

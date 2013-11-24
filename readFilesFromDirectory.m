@@ -1,4 +1,4 @@
-function [finalTextArray, wordList] = readFilesFromDirectory(directory)
+function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(directory)
 %READFILESFROMDIRECTORY processes all text files in a given directory
 %   Author: Josh Jacobson
 
@@ -54,10 +54,12 @@ function [finalTextArray, wordList] = readFilesFromDirectory(directory)
     
     % Remove empty elements from the array (from ignored files)
     finalTextArray = cell(1, fileCount - numFilesToIgnore);
+    finalFilenames = cell(1, fileCount - numFilesToIgnore);
     i = 1;
     for j = 1:fileCount
         if ~ismember(j, filesToIgnore)
             finalTextArray{i} = textArray{j};
+            finalFilenames{i} = filenames{j};
             i = i + 1;
         end
     end

@@ -11,12 +11,8 @@ function filenames = spamsort(mail_directory, spam_directory, ham_directory, dic
 %   Author: Josh Jacobson
 %   Default run: spamsort('emails', 'classified_as_spam', 'classified_as_ham', 'dictionary.txt', 0.5) 
     
-    %Get filenames
-    files = dir(mail_directory);
-    filenames = {files.name};
-    
     % Read the email files from the given directory
-    [emails, ~] = readFilesFromDirectory(mail_directory);
+    [emails, ~, filenames] = readFilesFromDirectory(mail_directory);
     emailCount = length(emails);
     
     
@@ -24,9 +20,9 @@ function filenames = spamsort(mail_directory, spam_directory, ham_directory, dic
     [dictionaryWords, spamProb, hamProb] = readDictionary('dictionary.txt');
     
     % Calculate Bayesians and sort the email files
-    for i = 4:emailCount+3
+    for i = 1:emailCount
         filename = strcat(mail_directory,'/',filenames{i});
-        message = unique(emails{i-3}); % Consider only unique instances of words
+        message = unique(emails{i}); % Consider only unique instances of words
         
         % Initialize variables for Baysian computations:
         spamValue = spam_prior_probability;
@@ -41,9 +37,6 @@ function filenames = spamsort(mail_directory, spam_directory, ham_directory, dic
                 hamValue = hamValue + log10(hamProb(location));
             end
         end
-        filename
-        spamValue
-        hamValue
         
         if spamValue > hamValue
             movefile(filename, spam_directory); % move to spam directory

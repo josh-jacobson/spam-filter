@@ -1,50 +1,56 @@
-function [spam, ham] = makedictionary( spam_directory, ham_directory, dictionary_filename) 
+function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, dictionary_filename) 
 %MAKEDICTIONARY constructs a dictionary file for use in spam filtering.
 %   The inputs spam_directory and ham_directory are the filepaths to two 
 %   folders, each of which contains one or more ASCII text files. This
 %   function constructs a space delimited dictionary file in the current 
-%   directory, with filename dictionary_filename. Each line of the 
-%   dictionary file has the following format: 
+%   directory, with filename dictionary_filename. 
+%
+%   Each line of the dictionary file has the following format: 
 %   [word] [P(word|spam)] [P(word|ham)]
+%
+%   Author: Josh Jacobson
+%   Default run: [spam, ham] = makedictionary('smallspam', 'smallham', 'dictionary.txt');
 
-    % To do: set up regex or other method of parsing html, removing header
-
-    % Read the inputs
-    spam_files = dir(spam_directory);
-    spam_filenames = {spam_files.name};
-    spamCount = length(spam_filenames);
-    spam = cell(1,spamCount);
+    % Read the spam and ham files from the input directories
+    [spam, spamWords] = readFilesFromDirectory(spam_directory);
+    [ham, hamWords] = readFilesFromDirectory(ham_directory);
     
-    ham_files = dir(ham_directory);
-    ham_filenames = {ham_files.name};
-    hamCount = length(ham_filenames);
-    ham = cell(1,spamCount);
-    
-    
-    cd('spam');
-    for i = 4:spamCount % Need to remedy this with a regex to handle ., .., ds_store
-        id = fopen(spam_filenames{i});
-        text = textscan(id, '%s');
-        spam{i} = text{1};
-        fclose(id);
-    end
-    
-    cd('../ham');
-    for i = 4:hamCount % Need to remedy this with a regex to handle ., .., ds_store
-        id = fopen(ham_filenames{i});
-        text = textscan(id, '%s');
-        ham{i} = text{1};
-        fclose(id);
-    end
-    cd('../');
+    spamCount = length(spam);
+    hamCount = length(ham);
     
     % Create the output dictionary file
     fid = fopen(dictionary_filename, 'w');
     
-    a = 0.5;
-    b = 0.9;
-    fprintf(fid, '%s %f %f\n', 'word', a, b);
-    fprintf(fid, '%s %f %f\n', 'word', a, b);
+    wordList = [spamWords;hamWords];
+    wordList = unique(wordList);
+    
+    for i = 1:length(wordList)
+        word = wordList(i);
+        
+        % Compute probability of the word being in a spam file
+        spamProb = 0;
+        for j = 1:spamCount
+            if ismember(word, spam{j})
+                spamProb = spamProb + 1;
+            end
+        end
+        spamProb = spamProb + 1; % add 1 for pseudocount
+        spamProb = spamProb / (spamCount+1);
+        
+        % Compute probability of the word being in a ham file
+        hamProb = 0;
+        for j = 1:hamCount
+            if ismember(word, ham{j})
+                hamProb = hamProb + 1;
+            end
+        end
+        hamProb = hamProb + 1; % add 1 for pseudocount
+        hamProb = hamProb / (hamCount+1); 
+        
+        % Print to the dictionary file
+        fprintf(fid, '%s %f %f\n', wordList{i}, spamProb, hamProb);
+        
+    end
 
 
 end

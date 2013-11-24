@@ -7,19 +7,25 @@ function filenames = spamsort(mail_directory, spam_directory, ham_directory, dic
 %   function moves all files from the mail directory into either the
 %   spam_directory or the ham_directory, based on a naïve Bayesian
 %   classifier.
+%
+%   Author: Josh Jacobson
 
-    % Read the emails
-    files = dir(mail_directory);
-    filenames = {files.name};
-    fileCount = length(filenames);
-    emails = cell(1,fileCount);
+    % Read the spam and ham files from the input directories
+    [emails, ~] = readFilesFromDirectory(mail_directory);
     
-    % ****Todo: also need to handle ., .., and DS_STORE here. Regex?
-    % move everything to the spam folder, for testing purposes
+    emailCount = length(emails);
+    
+
+    % Sort the email files
     for i = 4:fileCount
         filename = strcat(mail_directory,'/',filenames{i})
+        
+        
+        % if spam
         movefile(filename, spam_directory)
+        
+        % if ham
+        movefile(filename, ham_directory)
     end
 
 end
-

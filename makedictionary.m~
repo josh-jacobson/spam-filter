@@ -1,39 +1,48 @@
-function spam = makedictionary( spam_directory, ham_directory, dictionary_filename) 
+function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, dictionary_filename) 
 %MAKEDICTIONARY constructs a dictionary file for use in spam filtering.
 %   The inputs spam_directory and ham_directory are the filepaths to two 
 %   folders, each of which contains one or more ASCII text files. This
 %   function constructs a space delimited dictionary file in the current 
-%   directory, with filename dictionary_filename. Each line of the 
-%   dictionary file has the following format: 
+%   directory, with filename dictionary_filename. 
+%
+%   Each line of the dictionary file has the following format: 
 %   [word] [P(word|spam)] [P(word|ham)]
+%
+%   Author: Josh Jacobson
+%   Default run: [spam, ham] = makedictionary('smallspam', 'smallham', 'dictionary.txt');
 
-    spam_files = dir('spam');
-    spam_filenames = {spam_files.name};
-    n = length(spam_filenames);
-    spam = cell(1,n);
+    % Read the spam and ham files from the input directories
+    [spam, spamWords] = readFilesFromDirectory(spam_directory);
+    [ham, hamWords] = readFilesFromDirectory(ham_directory);
     
-    spam_files = dir('spam');
-    spam_filenames = {spam_files.name};
-    n = length(s_filenames);
-    ham = cell(1,n);
+    spamCount = length(spam);
+    hamCount = length(ham);
     
+    % Create the output dictionary file
+    fid = fopen(dictionary_filename, 'w');
     
-    cd('spam');
-    for i = 4:n % Need to remedy this with a regex to handle ., .., ds_store
-        id = fopen(spam_filenames{i});
-        text = textscan(id, '%s');
-        spam{i} = text{1};
-        fclose(id);
+    wordList = [spamWords;hamWords];
+    wordList = unique(wordList);
+    
+    for i = 1:length(wordList)
+        word = wordList(i);
+        
+        % Compute probability of the word being in a spam file
+        spamProb = 0;
+        for j = 1:spamCount
+            if ismember(word, spam{i})
+                spamProb = spamProb + 1;
+                
+            end
+        end
+        
+        % Compute probability of the word being in a ham file
+        hamProb
+        
+        % Print to the dictionary file
+        fprintf(fid, '%s %f %f\n', wordList(i), a, b);
+        
     end
-    
-    cd('../ham');
-    for i = 4:n % Need to remedy this with a regex to handle ., .., ds_store
-        id = fopen(ham_filenames{i});
-        text = textscan(id, '%s');
-        ham{i} = text{1};
-        fclose(id);
-    end
-    cd('../');
 
 
 end

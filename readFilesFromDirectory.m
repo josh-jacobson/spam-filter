@@ -13,8 +13,8 @@ function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(dir
     textArray = cell(1,fileCount);
     
     for i = 1:fileCount
-        filename = filenames{i}
-        filepath = strcat(directory,'/',filename)
+        filename = filenames{i};
+        filepath = strcat(directory,'/',filename);
         if filename(1) == '.' || strcmpi(filename, 'cmds') % ignore ., .., .DS_STORE and cmds
             numFilesToIgnore = numFilesToIgnore + 1;
             filesToIgnore(numFilesToIgnore) = i;
@@ -28,7 +28,7 @@ function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(dir
             
             % Read in the input file word by word, skipping the header
             id = fopen(filepath);
-            text = textscan(id, '%s', 'Delimiter', ' ,.;!?(){}[]"$%#-=+\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine);
+            text = textscan(id, '%s', 'Delimiter', ' ,.;!?(){}[]"$%#-=+*/\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine, 'CommentStyle', '<');
             text = text{1};
             fclose(id);
             

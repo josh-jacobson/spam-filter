@@ -27,7 +27,7 @@ function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, 
     for i = 1:length(wordList)
         word = wordList(i);
         
-        % Compute probability of the word being in a spam file
+        % Compute P(word|spam)
         spamProb = 0;
         for j = 1:spamCount
             if ismember(word, spam{j})
@@ -37,7 +37,7 @@ function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, 
         spamProb = spamProb + 1; % add 1 for pseudocount
         spamProb = spamProb / (spamCount+1);
         
-        % Compute probability of the word being in a ham file
+        % Compute P(word|ham)
         hamProb = 0;
         for j = 1:hamCount
             if ismember(word, ham{j})

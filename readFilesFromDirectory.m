@@ -30,21 +30,8 @@ function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(dir
             id = fopen(filepath);
             text = textscan(id, '%s', 'Delimiter', ' ,.;!?(){}[]"$%#-=+*/\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine, 'CommentStyle', '<');
             text = text{1};
+            text = lower(text);
             fclose(id);
-            
-            %{
-            
-            % Remove final s from plural words
-            for i = 1:length(text)
-                word = text{i}
-                if word(length(word)) == 's'
-                    word(length(word)) = []
-                    text{i} = word;
-                end
-            end
-            
-            %}
-            
             
             textArray{i} = text;
             wordList = [wordList;text]; % Append this file's words to the word list

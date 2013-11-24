@@ -28,7 +28,7 @@ function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(dir
             
             % Read in the input file word by word, skipping the header
             id = fopen(filepath);
-            text = textscan(id, '%s', 'Delimiter', ' ,.;!?(){}[]"$%#-=+*/\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine, 'CommentStyle', '<');
+            text = textscan(id, '%s', 'Delimiter', ' ,.;!''<>?(){}[]"$%=+*/\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine, 'CommentStyle', '<');
             text = text{1};
             text = lower(text);
             fclose(id);

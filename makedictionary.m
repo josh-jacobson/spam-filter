@@ -52,6 +52,5 @@ function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, 
         
     end
 
-
 end
 

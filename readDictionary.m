@@ -1,9 +1,10 @@
 function [words, spamProb, hamProb] = readDictionary(filename)
-%READDICTIONARY is a custom function to read in a space-delimited dictionary file
+%READDICTIONARY is a custom function to read in a dictionary file
+%   Each line of the dictionary file is in the following format:
+%   [word] [P(word|spam)] [P(word|ham)]
+%
 %   Author : Josh Jacobson
 
-    
-    
     % Read in the input file word by word, skipping the header
     id = fopen(filename);
     text = textscan(id, '%s');
@@ -33,10 +34,6 @@ function [words, spamProb, hamProb] = readDictionary(filename)
         spamProb(i) = str2num(spamProb_cell{i});
         hamProb(i) = str2num(hamProb_cell{i});
     end
-    
-    
-    
-
 
 end
 

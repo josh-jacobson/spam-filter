@@ -9,23 +9,47 @@ function filenames = spamsort(mail_directory, spam_directory, ham_directory, dic
 %   classifier.
 %
 %   Author: Josh Jacobson
-
-    % Read the spam and ham files from the input directories
-    [emails, ~] = readFilesFromDirectory(mail_directory);
+%   Default run: spamsort('emails', 'classified_as_spam', 'classified_as_ham', 'dictionary.txt', 0.5) 
     
+    %Get filenames
+    files = dir(mail_directory);
+    filenames = {files.name};
+    
+    % Read the email files from the given directory
+    [emails, ~] = readFilesFromDirectory(mail_directory);
     emailCount = length(emails);
     
-
-    % Sort the email files
-    for i = 4:fileCount
-        filename = strcat(mail_directory,'/',filenames{i})
+    
+    % Read the dictionary file
+    [dictionaryWords, spamProb, hamProb] = readDictionary('dictionary.txt');
+    
+    % Calculate Bayesians and sort the email files
+    for i = 4:emailCount+3
+        filename = strcat(mail_directory,'/',filenames{i});
+        message = unique(emails{i-3}); % Consider only unique instances of words
         
+        % Initialize variables for Baysian computations:
+        spamValue = spam_prior_probability;
+        hamValue = 1 - spam_prior_probability;
         
-        % if spam
-        movefile(filename, spam_directory)
+        % Add up the sums in the Baysians
+        for j = 1:length(message)
+            word = message{j};
+            [~,location] = ismember(word,dictionaryWords); % Find the word's location in the dictionary
+            if location ~= 0
+                spamValue = spamValue + log10(spamProb(location));
+                hamValue = hamValue + log10(hamProb(location));
+            end
+        end
+        filename
+        spamValue
+        hamValue
         
-        % if ham
-        movefile(filename, ham_directory)
+        if spamValue > hamValue
+            movefile(filename, spam_directory); % move to spam directory
+        else
+        movefile(filename, ham_directory); % move to ham directory
+        end
     end
 
 end

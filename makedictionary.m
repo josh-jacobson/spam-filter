@@ -9,7 +9,7 @@ function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, 
 %   [word] [P(word|spam)] [P(word|ham)]
 %
 %   Author: Josh Jacobson
-%   Default run: [spam, ham] = makedictionary('smallspam', 'smallham', 'dictionary.txt');
+%   Default run: [spam, ham, wordList] = makedictionary('smallspam', 'smallham', 'dictionary.txt');
 
     % Read the spam and ham files from the input directories
     [spam, spamWords] = readFilesFromDirectory(spam_directory);

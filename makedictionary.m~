@@ -9,7 +9,7 @@ function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, 
 %   [word] [P(word|spam)] [P(word|ham)]
 %
 %   Author: Josh Jacobson
-%   Default run: [spam, ham] = makedictionary('smallspam', 'smallham', 'dictionary.txt');
+%   Default run: [spam, ham, wordList] = makedictionary('smallspam', 'smallham', 'dictionary.txt');
 
     % Read the spam and ham files from the input directories
     [spam, spamWords] = readFilesFromDirectory(spam_directory);
@@ -27,20 +27,28 @@ function [spam, ham, wordList] = makedictionary( spam_directory, ham_directory, 
     for i = 1:length(wordList)
         word = wordList(i);
         
-        % Compute probability of the word being in a spam file
+        % Compute P(word|spam)
         spamProb = 0;
         for j = 1:spamCount
-            if ismember(word, spam{i})
+            if ismember(word, spam{j})
                 spamProb = spamProb + 1;
-                
             end
         end
+        spamProb = spamProb + 1; % add 1 for pseudocount
+        spamProb = spamProb / (spamCount+1);
         
-        % Compute probability of the word being in a ham file
-        hamProb
+        % Compute P(word|ham)
+        hamProb = 0;
+        for j = 1:hamCount
+            if ismember(word, ham{j})
+                hamProb = hamProb + 1;
+            end
+        end
+        hamProb = hamProb + 1; % add 1 for pseudocount
+        hamProb = hamProb / (hamCount+1); 
         
         % Print to the dictionary file
-        fprintf(fid, '%s %f %f\n', wordList(i), a, b);
+        fprintf(fid, '%s %f %f\n', wordList{i}, spamProb, hamProb);
         
     end
 

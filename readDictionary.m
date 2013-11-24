@@ -13,20 +13,28 @@ function [words, spamProb, hamProb] = readDictionary(filename)
     
     % initialize variables
     words = cell(wordCount,1);
-    spamProb = NaN(wordCount,1);
-    hamProb = NaN(wordCount,1);
+    spamProb_cell = cell(wordCount,1);
+    hamProb_cell = cell(wordCount,1);
     
     % Parse the text into separate vectors
     i = 1;
-    text
     for j = 1:3:length(text)
-        text(j)
         words(i) = text(j);
-        text(j+1)
-        spamProb(i) = str2num(text(j+1));
-        hamProb(i) = str2num(text(j+2));
+        spamProb_cell(i) = text(j+1);
+        hamProb_cell(i) = text(j+2);
         i = i+1;
     end
+    
+    spamProb = NaN(wordCount, 1);
+    hamProb = NaN(wordCount, 1);
+    
+    % Convert from cell to floating point vectors
+    for i = 1:wordCount
+        spamProb(i) = str2num(spamProb_cell{i});
+        hamProb(i) = str2num(hamProb_cell{i});
+    end
+    
+    
     
 
 

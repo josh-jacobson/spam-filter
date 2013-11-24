@@ -28,11 +28,23 @@ function [finalTextArray, wordList] = readFilesFromDirectory(directory)
             
             % Read in the input file word by word, skipping the header
             id = fopen(filename);
-            text = textscan(id, '%s', 'Delimiter', ',.;!-=+\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine);
+            text = textscan(id, '%s', 'Delimiter', ' ,.;!-=+\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine);
             text = text{1};
             fclose(id);
             
+            %{
+            
             % Remove final s from plural words
+            for i = 1:length(text)
+                word = text{i}
+                if word(length(word)) == 's'
+                    word(length(word)) = []
+                    text{i} = word;
+                end
+            end
+            
+            %}
+            
             
             textArray{i} = text;
             wordList = [wordList;text]; % Append this file's words to the word list

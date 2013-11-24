@@ -63,7 +63,8 @@ function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(dir
         end
     end
     
-    % Make the wordlist unique
+    % Ignore case and make the wordlist unique
+    wordList = lower(wordList);
     wordList = unique(wordList);
 
 end

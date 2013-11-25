@@ -1,2 +1,4 @@
 *.DS_STORE
 *.m~
+classified_as_spam/*
+classified_as_ham/*

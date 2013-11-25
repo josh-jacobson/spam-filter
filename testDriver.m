@@ -7,7 +7,6 @@
 %
 %   Author: Josh Jacobson
 
-%{
 
 makedictionary('spam1', 'ham1', 'dictionary1.txt');
 makedictionary('spam2', 'ham2', 'dictionary2.txt');
@@ -15,26 +14,18 @@ makedictionary('spam3', 'ham3', 'dictionary3.txt');
 makedictionary('spam4', 'ham4', 'dictionary4.txt');
 makedictionary('spam5', 'ham5', 'dictionary5.txt');
 
-
-
-
-
 spamsort('testmail1', 'classified_as_spam1', 'classified_as_ham1', 'dictionary1.txt', 0.5);
 spamsort('testmail2', 'classified_as_spam2', 'classified_as_ham2', 'dictionary2.txt', 0.5);
 spamsort('testmail3', 'classified_as_spam3', 'classified_as_ham3', 'dictionary3.txt', 0.5);
 spamsort('testmail4', 'classified_as_spam4', 'classified_as_ham4', 'dictionary4.txt', 0.5);
 spamsort('testmail5', 'classified_as_spam5', 'classified_as_ham5', 'dictionary5.txt', 0.5);
 
-%}
-
-
-
 spam_directories = {'classified_as_spam1', 'classified_as_spam2', 'classified_as_spam3', 'classified_as_spam4', 'classified_as_spam5'};
 ham_directories = {'classified_as_ham1', 'classified_as_ham2', 'classified_as_ham3', 'classified_as_ham4', 'classified_as_ham5'};
 
 error = zeros(5,1);
 
-for i = 1:5
+for i = 1:4
     files = dir(spam_directories{i});
     filenames = {files.name};
     fileCount = length(filenames);
@@ -56,12 +47,10 @@ for i = 1:5
     end
 end
 
-error = error / 20;
+error = error / 200;
 
 fold = 1:5;
 plot(fold, error);
 title('Error over Five Folds');
 xlabel('Fold');
 ylabel('Proportion of Misclassified Emails');
-
-

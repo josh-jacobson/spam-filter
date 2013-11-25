@@ -1,5 +1,13 @@
 function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(directory)
 %READFILESFROMDIRECTORY processes all text files in a given directory
+%   The output finalTextArray is a cell array in which each entry corresponds
+%   to a file in the directory and is itself a cell array of words taken 
+%   from one of the input files. wordList is a list of all unique words
+%   encountered in all files in the directory, and this is in alphabetical
+%   order. finalFilenames is just a cell array containing the filenames,
+%   and this information is used in spam filtering to be able to move the
+%   files.
+%
 %   Author: Josh Jacobson
 
     numFilesToIgnore = 0;
@@ -28,8 +36,9 @@ function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(dir
             
             % Read in the input file word by word, skipping the header
             id = fopen(filepath);
-            text = textscan(id, '%s', 'Delimiter', ' ,.;!?(){}[]"$%#-=+*/\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine, 'CommentStyle', '<');
+            text = textscan(id, '%s', 'Delimiter', ' ,.;!:''0123456789<>?(){}[]"=+*/\n', 'MultipleDelimsAsOne',1, 'HeaderLines', dividingLine, 'CommentStyle', '<');
             text = text{1};
+            text = lower(text);
             fclose(id);
             
             textArray{i} = text;

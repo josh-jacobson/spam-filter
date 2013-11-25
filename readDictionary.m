@@ -3,6 +3,13 @@ function [words, spamProb, hamProb] = readDictionary(filename)
 %   Each line of the dictionary file is in the following format:
 %   [word] [P(word|spam)] [P(word|ham)]
 %
+%   The outputs are as follows:
+%       words is a cell array (really a cell vector) containing the words in the dictionary
+%       spamProb is a floating point vector of probabilities corresponding
+%           to the words in the dictionary
+%       hamProb is in the same format as hamProb, but instead represents P(word|ham)
+%       
+%
 %   Author : Josh Jacobson
 
     % Read in the input file word by word, skipping the header

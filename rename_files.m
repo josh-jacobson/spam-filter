@@ -1,6 +1,7 @@
 function rename_files(spam_directory, ham_directory)
 %RENAME_FILES simply gives human-readable names to files for testing
 %purposes
+%
 %   Author: Josh Jacobson
     
     % Read the inputs

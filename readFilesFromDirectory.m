@@ -1,5 +1,19 @@
 function [finalTextArray, wordList, finalFilenames] = readFilesFromDirectory(directory)
 %READFILESFROMDIRECTORY processes all text files in a given directory
+%   The output finalTextArray is a cell array in which each entry corresponds
+%   to a file in the directory and is itself a cell array of words taken 
+%   from one of the input files. wordList is a list of all unique words
+%   encountered in all files in the directory, and this is in alphabetical
+%   order. finalFilenames is just a cell array containing the filenames,
+%   and this information is used in spam filtering to be able to move the
+%   files.
+%
+%   A significant amount of text sanitization is appplied through the
+%   process of reading files from a directory. Many delimiters are removed,
+%   including normal punctuation. HTML tags are also removed by treating
+%   any line starting with "<" as a comment. The entire header of every
+%   email file is also removed.
+%
 %   Author: Josh Jacobson
 
     numFilesToIgnore = 0;
